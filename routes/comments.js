@@ -12,13 +12,14 @@ var connection = mysql.createConnection({
 
 connection.connect(function(err) {
   if (err) throw err
-  console.log('You are now connected...')
+  console.log('You are now connected...');
 })
 
 
 /* Get all comments */
 router.get('/', function(req, res, next) {
-    connection.query('SELECT * FROM comments', function(err, results) {
+    let sql = "SELECT * FROM comments ORDER BY inserted DESC";
+    connection.query(sql, function(err, results) {
         if (err) throw err
         
             var comments = getChildComments(results);
@@ -37,9 +38,26 @@ router.post('/', function (req, res) {
                 if (err) throw err
                 res.jsonp(results[0]);
             })
-    })
+    });
+    
 })
 
+/**
+ * Helper route to populate children on a comment. 
+ */
+router.post('/addchildren', function (req, res) {
+
+    for (let i = 0; i < 1000; i++)
+    {
+        connection.query('INSERT INTO comments (name, comment, parent_id) VALUES ("TEST '+ i +'", "TEST COMMENT'+ i +'", '+i+')',
+            [req.body.name, req.body.comment, req.body.parent_id], function (err, result) {
+                if (err) throw err
+                console.log(result);
+            });
+
+    }
+    res.jsonp(['done']);
+})
 
 function getChildComments(results, parent_id = 0, level = 0) 
 {

@@ -62,8 +62,8 @@ function loadChildren(data, $parent, level = 1) {
         $child_html.data('level', child.level).attr('data-level', child.level);
 
         if (child.level > 3) {
-            $child_html.find('.add_comment_form').remove();
-            $child_html.find('.add_comment').remove();
+            //$child_html.find('.add_comment_form').remove();
+            //$child_html.find('.add_comment').remove();
         }
         $parent.find('.child').first().append($child_html);
         if (child.children !== undefined) {
@@ -135,8 +135,8 @@ function addComment(data) {
         $($comment_html).insertAfter('.comment.placeholder');
     } else {
         if (level >= 3) {
-            $comment_html.find('.add_comment_form').remove();
-            $comment_html.find('.add_comment').remove();
+            //$comment_html.find('.add_comment_form').remove();
+            //$comment_html.find('.add_comment').remove();
         }
         $('.add_comment_form[data-parent_id="' + data.parent_id + '"]').parent().find('.child').first().prepend($comment_html);
     }
